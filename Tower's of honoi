@@ -1,0 +1,10 @@
+def hanoi(n, source, destination, auxiliary):
+    if n == 1:
+        print(f"Move disk 1 from {source} to {destination}")
+        return
+    
+    hanoi(n - 1, source, auxiliary, destination)  # Move N-1 disks to auxiliary
+    print(f"Move disk {n} from {source} to {destination}")  # Move the largest disk
+    hanoi(n - 1, auxiliary, destination, source)  # Move N-1 disks to destination
+n = 3
+hanoi(n, 'S', 'D', 'A')
