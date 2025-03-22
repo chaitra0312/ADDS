@@ -1,42 +1,50 @@
-import java.util.Arrays;
+import java.util.*;
+
 class Job {
-	int id,deadline,profit;
-	Job(int id,int deadline,int profit) {
-		this.id=id;
-		this.deadline=deadline;
-		this.profit=profit;
-		}
-	}
-public class Js {
-	public static void schedulerJobs(Job[] jobs) {
-		int totalprofit=0;
-		Arrays.sort(jobs,(a,b)->b.profit-a.profit);
-		int n=jobs.length;
-		boolean[] slots=new boolean[n];
-		int[] result=new int[n];
-		for(Job j:jobs) {
-		for(int i=j.deadline-1;i>=0;i--) {
-		if(!slots[i]) {
-		slots[i] =true;
-		result[i]=j.id;
-		totalprofit+=j.profit;
-		break;
-		}
-	}
+    int id;
+    int deadline, profit;
+
+    Job(int id, int deadline, int profit) {
+        this.id = id;
+        this.deadline = deadline;
+        this.profit = profit;
+    }
 }
-System.out.println("selected jobs");
-for(int j:result) 
-	if(j!=0) 
-	    System.out.println(j+" ");
-	System.out.println("Totalprofit:"+totalprofit);
-	}
-public static void main(String[]args) {
-	Job[] jobs= { new Job(1,2,100),
-	              new Job(2,1,19),
-	              new Job(3,2,27),
-	              new Job(4,1,25),
-	              new Job(5,3,15) };
-	     schedulerJobs(jobs);
-	}
+
+public class JobScheduling {
+    public static void scheduleJobs(Job[] jobs) {
+        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
+        int n = jobs.length;
+        boolean[] slots = new boolean[n];
+        int[] result = new int[n];
+        int totalprofit = 0;
+        for (Job job : jobs) {
+            for (int j = Math.min(n, job.deadline) - 1; j >= 0; j--) {
+                if (!slots[j]) {
+                    slots[j] = true;
+                    result[j] = job.id;
+                    totalprofit += job.profit;
+                    break;
+                }
+            }
+        }
+        System.out.print("Selected jobs: ");
+        for (int job : result) {
+            if (job != 0) {
+                System.out.print(job + " ");
+            }
+        }
+        System.out.println("\nTotal Profit: " + totalprofit);
+    }
+
+    public static void main(String[] arg) {
+        Job[] jobs = {
+                new Job(1, 2, 100),
+                new Job(2, 1, 19),
+                new Job(3, 2, 27),
+                new Job(4, 1, 25),
+                new Job(5, 3, 15),
+        };
+        scheduleJobs(jobs); // Corrected method call
+    }
 }
-		
