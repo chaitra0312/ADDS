@@ -1,0 +1,40 @@
+import java.util.*;
+
+class Items {
+    int weight, profit;
+    double ratio;
+
+    Items(int weight, int profit) { // Corrected constructor
+        this.weight = weight;
+        this.profit = profit;
+        this.ratio = (double) profit / weight;
+    }
+}
+
+public class GreedyFractionalKnapsack {
+    public static double getMaxprofit(Items[] items, int m) { // Corrected return type
+        Arrays.sort(items, (a, b) -> Double.compare(b.ratio, a.ratio)); // Corrected sort order
+        double maxprofit = 0;
+        System.out.println("Items that place in the Bag:"); // Corrected spelling
+        for (Items item : items) { // Corrected Item to Items
+            if (item.weight <= m) {
+                maxprofit += item.profit;
+                System.out.println("Items: (weight: " + item.weight + ", profit: " + item.profit + ") - Taken Fully"); // Corrected output
+                m -= item.weight; // Update remaining capacity
+            } else {
+                double fraction = (double) m / item.weight;
+                maxprofit += item.profit * fraction;
+                System.out.println("Items: (weight: " + item.weight * fraction + ", profit: " + item.profit * fraction + ") - Taken " + (fraction * 100) + "%"); // Corrected output
+                break;
+            }
+        }
+        return maxprofit;
+    }
+
+    public static void main(String[] args) {
+        Items[] items = {new Items(10, 60), new Items(20, 100), new Items(10, 120)}; // Corrected Item to Items
+        int m = 50;
+        double maxprofit = getMaxprofit(items, m);
+        System.out.println("Maximum profit in knapsack: " + maxprofit);
+    }
+}
