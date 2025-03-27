@@ -1,0 +1,95 @@
+class MinHeap{
+    int arr[];
+    int maxSize, heapSize;
+
+    MinHeap(int maxSize){
+        this.maxSize = maxSize;
+        heapSize = 0;
+        arr = new int[maxSize];
+    }
+
+    public int parent(int i){
+        return (i - 1) / 2;
+    }
+
+    public int lchild(int i){
+        return 2 * i + 1;
+    }
+
+    public int rchild(int i){
+        return 2 * i + 2;
+    }
+
+    void MaxHeapify(int i){
+        int l = lchild(i);
+        int r = rchild(i);
+        int smallest = i;
+        
+        if (l < heapSize && arr[l] < arr[smallest]) 
+            smallest = l;
+        if (r < heapSize && arr[r] < arr[smallest])
+            smallest = r;
+
+        if (smallest!= i){
+            int temp = arr[i];
+            arr[i] = arr[smallest];
+            arr[smallest] = temp;
+            MaxHeapify(smallest);
+        }
+    }
+
+    void removeMin(){
+        if (heapSize <= 0)
+            System.out.println("Empty");
+        else if (heapSize == 1)
+            heapSize--;
+        else {
+            arr[0] = arr[heapSize - 1];
+            heapSize--;
+            MaxHeapify(0);
+        }
+    }
+
+    int getMin() {
+        return arr[0];
+    }
+
+    int curSize() {
+        return heapSize;
+    }
+
+    void insertkey(int x){
+        if (heapSize == maxSize) {
+            System.out.println("OverFlow");
+            return;
+        }
+        
+        int i = heapSize;
+        arr[i] = x;
+        heapSize++;
+
+        while (i != 0 && arr[parent(i)] < arr[i]) {
+            int temp = arr[i];
+            arr[i] = arr[parent(i)];
+            arr[parent(i)] = temp;
+            i = parent(i);
+        }
+    }
+
+    public static void main(String[] args) {
+        MinHeap h = new MinHeap(15);
+        int elements[] = {3, 10, 12, 8, 2, 14};
+        for (int e : elements)
+            h.insertkey(e);
+        
+        System.out.println(h.curSize());  // Current heap size
+        System.out.println(h.getMin());   // Maximum element
+
+        h.removeMin();  // Remove the maximum element (14)
+        h.insertkey(19);
+        h.insertkey(45);
+
+        System.out.println(h.curSize());  // Updated heap size
+        System.out.println(h.getMin());   // New maximum element
+    }
+}
